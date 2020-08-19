@@ -1,6 +1,6 @@
 
 const notificationDev = ''
-
+let timeoutId
 
 const notificationReducer = (state=notificationDev, action) => {
     switch(action.type) {
@@ -15,19 +15,21 @@ const notificationReducer = (state=notificationDev, action) => {
 
 //actionit:
 export const setNotification = (content, time) => {
+    clearTimeout(timeoutId)
+    console.log('TimeoutId on funktion alussa' ,timeoutId)
     return async dispatch => { 
-        await  dispatch({
+           await  dispatch({
             type: 'SET_NOTIFICATION',
                 data: {
                     content,
                 }
+            })
+        timeoutId = setTimeout(()=> {
+            dispatch(removeNotification())
         }, time)
-       
-    setTimeout(()=> {
-        dispatch(removeNotification())
-    }, time)
-     
-}}
+    console.log('TimeoutId on funktion lopussa' ,timeoutId)
+    }
+}
 
 export const removeNotification = () => {
     return {
