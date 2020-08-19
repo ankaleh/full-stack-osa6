@@ -4,9 +4,7 @@ const notificationDev = ''
 
 const notificationReducer = (state=notificationDev, action) => {
     switch(action.type) {
-        case 'SET_NOTIFICATION_VOTED':
-            return action.data.content
-        case 'SET_NOTIFICATION_ADDED':
+        case 'SET_NOTIFICATION':
             return action.data.content
         case 'REMOVE_NOTIFICATION':
             return notificationDev
@@ -16,23 +14,20 @@ const notificationReducer = (state=notificationDev, action) => {
 }
 
 //actionit:
-export const setNotificationVoted = (andecdoteContent) => {
-    return {
-      type: 'SET_NOTIFICATION_VOTED',
-      data: {
-        content: `You voted anecdote: "${andecdoteContent}"`,
-      }
-    }
-}
-
-export const setNotificationAdded = (andecdoteContent) => {
-    return {
-      type: 'SET_NOTIFICATION_ADDED',
-      data: {
-        content: `You added a new anecdote: "${andecdoteContent}"`
-      }
-    }
-}
+export const setNotification = (content, time) => {
+    return async dispatch => { 
+        await  dispatch({
+            type: 'SET_NOTIFICATION',
+                data: {
+                    content,
+                }
+        }, time)
+       
+    setTimeout(()=> {
+        dispatch(removeNotification())
+    }, time)
+     
+}}
 
 export const removeNotification = () => {
     return {
